@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YouTube API Test</title>
+	<meta charset="UTF-8"/>
+</head>
+<body>
+	<div id="player"></div>
+
+
+<script>
+	var tag = document.createElement('script');
+	tag.src = "https://www.youtube.com/iframe_api";
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+	var player;
+     function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: '02ddnGzxNZs',
+          playerVars:{
+          	autohide:'0', //2,1,0 >> case 2: (default) ocultar controles al reproducir; case 1: se ocultan despues segundos despues de play; case 0: siempre visible;
+          	autoplay:'0', //contexto 0 no 1 si
+          	cc_load_policy:'0', // subititulos 0 off 1 on
+          	controls:'2s', // cases 2, 1, 0 >> case 2 & 1 : muestra controles, la opcion 2 ofrece mejor rendimiento; case 0: no hay controles
+          	enablejsapi:'0', //activa y descativa api javascript default 0
+          	//end:'', //tiempo en segundos enteros donde finalizar el video
+          	fs:'0', //fullscreen button
+          	//hl:'', //idioma en la codificacion iso http://www.loc.gov/standards/iso639-2/php/code_list.php de dos letras
+          	iv_load_policy:'3', //mostrar anotaciones del video, cases 1 & 3, case 1: show; case 3 hide
+          	loop:'0', //reproducción automatica infinita
+          	modestbranding:'1', //ocultar logo youtube en los controles (seguirá mostrandose en la pantalla de reproducción en la esquina)
+          	//origin:'', //si esta activa enablejsapi:'1' el valor de origin deberá ser el dominio de la pagina
+          	//playerapiid:'', //valores de la api javascript
+          	rel:'0', //mostrar videos relacionados al finalizar la reproducción
+          	showinfo:'0', //muestar u oculta el nombre del video, y usuario que lo subió
+          	//start:'', //tiempo en segundo donde empezará a reproducir el video
+          	theme:'light' // dark & light
+          },
+          events: {
+            'onReady': onPlayerReady, //cuando el repoductor este cargado y listo
+            'onStateChange': onPlayerStateChange, //cambios en ele stado del reproductor como -1 unstarted, 0 ended
+            //'onError': onError, // evento sobre error ocurrido
+            //'onPlaybackQualityChange': onPlayerPlaybackQualityChange //evento de cambio de calidad de reproducción
+
+          }
+        });
+      }
+
+       function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 1000);
+          done = true;
+        }
+
+      }
+
+      function playVideo(){
+      	player.playVideo();
+      }
+
+      function stopVideo() {
+        player.stopVideo();
+      }
+
+</script>
+
+</body>
+</html>
